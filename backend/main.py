@@ -3,6 +3,8 @@ RecFrame — FastAPI application entry point.
 """
 import json
 import os
+import asyncio
+import httpx
 from datetime import timedelta
 from typing import List
 
@@ -35,8 +37,30 @@ app.add_middleware(
 
 
 @app.on_event("startup")
-def on_startup():
+async def on_startup():
     init_db()
+    asyncio.create_task(ping_render_url())
+
+
+async def ping_render_url():
+    """Keeps the Render web service awake by pinging its own URL every 14 minutes."""
+    url = os.getenv("RENDER_EXTERNAL_URL")
+    if not url:
+        print("RENDER_EXTERNAL_URL not set. Self-ping disabled.")
+        return
+    
+    ping_url = f"{url}/health"
+    print(f"Starting self-ping to {ping_url} every 14 minutes to prevent sleep.")
+    
+    async with httpx.AsyncClient() as client:
+        while True:
+            await asyncio.sleep(14 * 60)  # 14 minutes
+            try:
+                print(f"Pinging {ping_url} to keep server awake...")
+                response = await client.get(ping_url)
+                print(f"Ping response: {response.status_code}")
+            except Exception as e:
+                print(f"Error pinging server: {e}")
 
 
 # ── Health ────────────────────────────────────────────────────────────────────
