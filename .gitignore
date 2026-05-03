@@ -1,0 +1,51 @@
+# ── Claude / AI tooling ───────────────────────────────────────────────────────
+.claude/
+docs/superpowers/
+
+# ── Python / FastAPI backend ──────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# SQLite databases (including test DB)
+*.db
+*.sqlite
+*.sqlite3
+
+# pytest cache
+.pytest_cache/
+backend/test_recframe.db
+
+# ── Node / React frontend ─────────────────────────────────────────────────────
+node_modules/
+dist/
+.cache/
+
+# Vite / build artifacts
+frontend/dist/
+*.local
+
+# ── OS / Editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.log
+*.swp
+*.swo
+.idea/
+.vscode/
+*.suo
+*.user
